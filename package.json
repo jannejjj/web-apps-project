@@ -1,0 +1,19 @@
+{
+  "name": "web-apps-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jannejjj/web-apps-project.git"
+  },
+  "author": "Janne Pennanen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jannejjj/web-apps-project/issues"
+  },
+  "homepage": "https://github.com/jannejjj/web-apps-project#readme"
+}
