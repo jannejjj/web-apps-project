@@ -1,3 +1,4 @@
+require('dotenv').config()
 var express = require('express');
 var mongoose = require("mongoose")
 var path = require('path');
@@ -12,6 +13,7 @@ db.on("error", console.log.bind(console, "MongoDB connection error"));
 
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
+var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -23,5 +25,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
+app.use('/users', usersRouter);
 
 module.exports = app;

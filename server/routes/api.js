@@ -23,6 +23,6 @@ router.post('/snippet/', function(req, res, next) {
     })
 });
 
-router.get
+
 
 module.exports = router;
