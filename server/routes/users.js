@@ -44,7 +44,7 @@ router.post('/register',
     }
 );
 
-// Login - pretty basic. Checks if a user with the req.email exists and then compares passwords. If they match, a jwt is generated for the user
+// Login - pretty basic. Checks if a user with the req.email exists and then compares passwords. If they match, a jwt is generated for the user. The jwt is then saved to local storage on client side (which is an unsafe practice but will suffice for the purposes of this project). This also means that logout is handled on client side instead of here
 router.post('/login',
     body('email').trim().escape(),
     (req, res, next) => {
@@ -78,5 +78,31 @@ router.post('/login',
         })
     }
 )
+
+
+// Deleting a user. This could have been done using jwt more, but I felt like simply getting the email and password from req.body is enough. This option is only available for a logged in user.
+router.post('/delete',
+    body('email').trim().escape(),
+    (req, res, next) => {
+        User.findOne({email: req.body.email}, (err, user) => {
+            if(err) throw err;
+            if(!user) {
+                return res.status(403).json({message: "No user exists with the given email"})
+            } else {
+                bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+                    if(err) throw err;
+                    if(!isMatch) {
+                        return res.status(403).json({message: "Incorrect password!"})
+                    } else {
+                        User.deleteOne({email: req.body.email}).catch(function(error){
+                            console.log(error)
+                        })
+                        res.status(200).send("User deleted successfully");
+                    }
+                })
+            }
+        })
+
+    })
 
 module.exports = router;
