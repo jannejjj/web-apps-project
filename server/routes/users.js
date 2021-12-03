@@ -44,7 +44,7 @@ router.post('/register',
     }
 );
 
-// Login - pretty basic. Checks if a user with the req.email exists and then compares passwords. If they match, a jwt is generated for the user. The jwt is then saved to local storage on client side (which is an unsafe practice but will suffice for the purposes of this project). This also means that logout is handled on client side instead of here
+// Login - pretty basic. Checks if a user with the req.email exists and then compares passwords. If they match, a jwt is generated for the user. The jwt is then saved to local storage on client side (which is an unsafe practice but will suffice for the purposes of this project). This also means that logout is handled on client side instead of here.
 router.post('/login',
     body('email').trim().escape(),
     (req, res, next) => {
