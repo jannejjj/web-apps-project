@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let commentSchema = new Schema({
-    postID: {type: String},
+    snippetid: {type: String},
     comment: {type: String},
     timestamp: {type: String},
     upvotes: {type: Number},
