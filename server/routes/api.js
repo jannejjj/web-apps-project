@@ -28,9 +28,15 @@ router.post('/snippet/delete/', function(req, res, next) {
     Snippet.findByIdAndRemove(req.body.id, function(err, snippet) {
         if (err) return next(err);
         if(!snippet) {
-            return res.status(404).send("No snippet was found with the given id");
+            return res.status(404).send("No snippet was found with the given id.");
         } else {
-            return res.status(200).send("Removed snippet:" + snippet);
+            Comment.deleteMany({snippetid: req.body.id}, function(err, result) {
+                if (err) {
+                    return next(err);
+                } else {
+                    return res.status(200).send("Removed snippet: " + snippet.snippet + " and " + result.deletedCount + " comments.");
+                }
+            })
         }
     })
 });

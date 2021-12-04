@@ -1,0 +1,16 @@
+Snippet
+{
+    "snippet": "Koodinpätkä",
+    "timestamp": "4.12",
+    "upvotes": 10,
+    "downvotes": 1
+}
+
+Comment
+{
+    "snippetid": "61ab9a5cfa61ab7311a36d80",
+    "comment": "asdasdasd",
+    "timestamp": "4.12",
+    "upvotes": 10,
+    "downvotes": 1
+}
