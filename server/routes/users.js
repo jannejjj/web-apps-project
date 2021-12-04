@@ -87,7 +87,7 @@ router.post('/delete',
         User.findOne({email: req.body.email}, (err, user) => {
             if(err) throw err;
             if(!user) {
-                return res.status(403).json({message: "No user exists with the given email"})
+                return res.status(404).json({message: "No user exists with the given email"})
             } else {
                 bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
                     if(err) throw err;
