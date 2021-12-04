@@ -24,6 +24,17 @@ router.post('/snippet/', function(req, res, next) {
     })
 });
 
+router.post('/snippet/delete/', function(req, res, next) {
+    Snippet.findByIdAndRemove(req.body.id, function(err, snippet) {
+        if (err) return next(err);
+        if(!snippet) {
+            return res.status(404).send("No snippet was found with the given id");
+        } else {
+            return res.status(200).send("Removed snippet:" + snippet);
+        }
+    })
+});
+
 // Basically identical to the above, checks if an identical comment exists on the snippet and if not, saves the comment with the snippet's id and returns 200. Otherwise returns 403.
 router.post('/comment/', function(req, res, next) {
     Comment.findOne({snippetid: req.body.snippetid, comment: req.body.comment},
@@ -45,7 +56,5 @@ router.post('/comment/', function(req, res, next) {
         }
     })
 });
-
-
 
 module.exports = router;
