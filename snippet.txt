@@ -1,5 +1,6 @@
 Snippet
 {
+    "title": "Otsikko",
     "snippet": "Koodinpätkä",
     "timestamp": "4.12",
     "upvotes": 10,

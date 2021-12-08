@@ -4,12 +4,13 @@ const mongoose = require("mongoose");
 const Snippet = require("../models/Snippet")
 const Comment = require("../models/Comment")
 
-// Checks if an identical snippet exists and if not, saves the snippet to database and returns 200. Otherwise returns 403 Decided to not allow duplicates
+// Checks if an identical snippet exists and if not, saves the snippet to database and returns 200. Otherwise returns 403.
 router.post('/snippet/', function(req, res, next) {
     Snippet.findOne({snippet: req.body.snippet}, (err, snippet) => {
         if(err) return next(err);
         if(!snippet) {
             new Snippet({
+                title: req.body.title,
                 snippet: req.body.snippet,
                 timestamp: req.body.timestamp,
                 upvotes: req.body.upvotes,
@@ -27,9 +28,35 @@ router.post('/snippet/', function(req, res, next) {
 // Simply finds all snippets and returns them. A catch is added for errors. This is used for getting the snippets into the "feed"
 router.get('/snippets/', async function(req, res, next) {
     const snippets = await Snippet.find({})
-    .catch(err => console.log('Error finding snippets: ' + err.message));
-    res.send(snippets);
+    .catch(err => res.send({error: err}));
+    res.json(snippets);
 })
+
+router.get('/snippet/:id', function(req, res, next) {
+    const {id} = req.params;
+    Snippet.findById(id, (err, snippet) => {
+        if(err) return next(err);
+        if(!snippet) {
+            res.status(404).send("No snippet found with the given id!")
+        } else {
+            res.json(snippet);
+        }
+    })
+})
+
+/* NOT USED ATM
+// Either increments or decrements the downvote value by 1, depending on the flag-argument
+router.post('/snippet/downvote/:flag', function(req, res, next) {
+    const {flag} = req.params;
+    let value = 1;
+    if (flag == "decrement") value = -1;
+    Snippet.findByIdAndUpdate(req.body.id,
+        {
+            $inc: {
+                downvotes: value
+            }
+        })
+}) */
 
 // Finds snippet by req.body.id and removes it. Then removes all comments whose snippetid = req.body.id
 router.post('/snippet/delete/', function(req, res, next) {

@@ -11,7 +11,6 @@ mongoose.Promise = Promise;
 const db = mongoose.connection;
 db.on("error", console.log.bind(console, "MongoDB connection error"));
 
-var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
 var usersRouter = require('./routes/users');
 
@@ -23,7 +22,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 app.use('/api', apiRouter);
 app.use('/users', usersRouter);
 

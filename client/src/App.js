@@ -1,10 +1,25 @@
 import './App.css';
+import Feed from './components/Feed'
+import Topbar from './components/Topbar';
+import SnippetPage from './components/SnippetPage';
+import React from 'react'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Snipper</h1>
-    </div>
+    <Router>
+      <div className="App">
+        <Topbar />
+        <Feed/>
+        <Routes>
+          <Route path="/snippet/:id" element={<SnippetPage/>}/>
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

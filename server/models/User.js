@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 let userSchema = new Schema ({
     email : {type: String},
     password : {type: String},
-    hasVoted: {type: Boolean},
+    votedSnippets: [{type: String}],
+    votedComments: [{type: String}],
     isAdmin: {type: Boolean}
 })
 

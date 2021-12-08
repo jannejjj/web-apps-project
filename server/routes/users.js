@@ -31,7 +31,8 @@ router.post('/register',
                         new User({
                             email: req.body.email,
                             password: hash,
-                            hasVoted: false,
+                            votedComments: [],
+                            votedSnippets: [],
                             isAdmin: false
                         }).save((err) => {
                             if(err) return next(err);
