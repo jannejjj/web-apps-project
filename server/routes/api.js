@@ -24,6 +24,14 @@ router.post('/snippet/', function(req, res, next) {
     })
 });
 
+// Simply finds all snippets and returns them. A catch is added for errors. This is used for getting the snippets into the "feed"
+router.get('/snippets/', async function(req, res, next) {
+    const snippets = await Snippet.find({})
+    .catch(err => console.log('Error finding snippets: ' + err.message));
+    res.send(snippets);
+})
+
+// Finds snippet by req.body.id and removes it. Then removes all comments whose snippetid = req.body.id
 router.post('/snippet/delete/', function(req, res, next) {
     Snippet.findByIdAndRemove(req.body.id, function(err, snippet) {
         if (err) return next(err);
@@ -41,7 +49,7 @@ router.post('/snippet/delete/', function(req, res, next) {
     })
 });
 
-// Basically identical to the above, checks if an identical comment exists on the snippet and if not, saves the comment with the snippet's id and returns 200. Otherwise returns 403.
+// Basically identical to POSTing a snippet. Checks if an identical comment exists and if not, creates one and saves it to db
 router.post('/comment/', function(req, res, next) {
     Comment.findOne({snippetid: req.body.snippetid, comment: req.body.comment},
     function(err, comment) {
