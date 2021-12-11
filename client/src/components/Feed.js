@@ -26,7 +26,7 @@ function Feed() {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div style={{ marginTop: 30 }}>
       <Error error={error} />
       {snippets.map((snippet) => (
         <Snippet

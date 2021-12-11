@@ -22,7 +22,7 @@ function SnippetPage() {
           setSnippet(json);
         }
       });
-  }, []);
+  }, [id]);
 
   const [comments, setComments] = useState([]);
   useEffect(() => {
@@ -31,17 +31,17 @@ function SnippetPage() {
       .then((json) => {
         console.log(json);
         if (json.error) {
-          console.log(json.error);
+          setError(json.error);
         } else if (json.length === 0) {
           setError("No comments.");
         } else {
           setComments(json);
         }
       });
-  }, []);
+  }, [id]);
 
   return (
-    <div>
+    <div style={{ paddingTop: 175 }}>
       <Snippet data={snippet} />
       <h3 style={{ fontSize: 30 }}>Comments:</h3>
       <Error error={error} />

@@ -3,10 +3,8 @@ export const Comment = (props) => {
   return (
     <div
       style={{
-        align: "center",
-        margin: "auto",
         backgroundColor: "#a1efff",
-        width: 600,
+        width: 700,
         borderRadius: 10,
       }}
     >

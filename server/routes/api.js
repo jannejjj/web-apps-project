@@ -8,6 +8,7 @@ const Comment = require("../models/Comment");
 
 // Checks if an identical snippet exists and if not, saves the snippet to database and returns 200. Otherwise returns 403.
 router.post("/snippet/", function (req, res, next) {
+  console.log(req.body);
   Snippet.findOne({ snippet: req.body.snippet }, (err, snippet) => {
     if (err) return next(err);
     if (!snippet) {
@@ -19,15 +20,17 @@ router.post("/snippet/", function (req, res, next) {
         downvotes: req.body.downvotes,
       }).save((err) => {
         if (err) return next(err);
-        return res.status(200).send("Saved snippet to database.");
+        return res.status(200).json({ message: "Saved snippet to database." });
       });
     } else {
-      return res.status(403).send("Duplicate snippets are not allowed!");
+      return res
+        .status(403)
+        .json({ error: "Duplicate snippets are not allowed!" });
     }
   });
 });
 
-// Simply finds all snippets and returns them. A catch is added for errors. This is used for getting the snippets into the "feed"
+// Simply finds all snippets and returns them. A catch is added for errors. This is used for getting the snippets into the feed
 router.get("/snippets/", async function (req, res, next) {
   const snippets = await Snippet.find({}).catch((err) =>
     res.send({ error: err })
@@ -40,7 +43,7 @@ router.get("/snippet/:id", function (req, res, next) {
   Snippet.findById(id, (err, snippet) => {
     if (err) return next(err);
     if (!snippet) {
-      res.status(404).send("No snippet found with the given id!");
+      res.status(404).json({ error: "No snippet found with the given id!" });
     } else {
       res.json(snippet);
     }
@@ -66,21 +69,22 @@ router.post("/snippet/delete/", function (req, res, next) {
   Snippet.findByIdAndRemove(req.body.id, function (err, snippet) {
     if (err) return next(err);
     if (!snippet) {
-      return res.status(404).send("No snippet was found with the given id.");
+      return res
+        .status(404)
+        .json({ error: "No snippet was found with the given id." });
     } else {
       Comment.deleteMany({ snippetid: req.body.id }, function (err, result) {
         if (err) {
           return next(err);
         } else {
-          return res
-            .status(200)
-            .send(
+          return res.status(200).json({
+            message:
               "Removed snippet: " +
-                snippet.snippet +
-                " and " +
-                result.deletedCount +
-                " comments."
-            );
+              snippet.snippet +
+              " and " +
+              result.deletedCount +
+              " comments.",
+          });
         }
       });
     }
@@ -107,7 +111,9 @@ router.post("/comment/", function (req, res, next) {
           return res.status(200).send("Saved comment to database.");
         });
       } else {
-        return res.status(403).send("Duplicate comments are not allowed!");
+        return res
+          .status(403)
+          .json({ error: "Duplicate comments are not allowed!" });
       }
     }
   );

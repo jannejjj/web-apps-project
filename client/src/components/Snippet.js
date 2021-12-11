@@ -12,11 +12,11 @@ export const Snippet = (props) => {
     <div
       onClick={props.onClick}
       style={{
-        align: "center",
-        margin: "auto",
-        backgroundColor: "#8aebff",
-        width: 600,
+        margin: "0.5rem auto",
+        backgroundColor: "#8bf6ff",
+        width: 700,
         borderRadius: 10,
+        padding: 5,
       }}
     >
       <p style={{ margin: 4, fontSize: 25 }}>{props.data.title}</p>
