@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Error from "./Error";
 const SnippetForm = () => {
   const [snippet, setSnippet] = useState("");
