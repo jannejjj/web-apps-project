@@ -4,6 +4,7 @@ import Error from "./Error";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import CommentForm from "./CommentForm";
 
 function SnippetPage() {
   const { id } = useParams();
@@ -43,13 +44,14 @@ function SnippetPage() {
   return (
     <div style={{ paddingTop: 175 }}>
       <Snippet data={snippet} />
+      <CommentForm snippetid={id} />
       <h3 style={{ fontSize: 30 }}>Comments:</h3>
       <Error error={error} />
       <div
         style={{
           align: "center",
           margin: "auto",
-          width: 600,
+          width: 700,
           borderRadius: 10,
         }}
       >

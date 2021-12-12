@@ -108,7 +108,9 @@ router.post("/comment/", function (req, res, next) {
           snippetid: req.body.snippetid,
         }).save((err) => {
           if (err) return next(err);
-          return res.status(200).send("Saved comment to database.");
+          return res
+            .status(200)
+            .json({ message: "Saved comment to database." });
         });
       } else {
         return res
