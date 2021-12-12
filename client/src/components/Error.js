@@ -1,4 +1,4 @@
-/* This error component is used whenever there's a need to display an error returned from back-end, such as when trying to post a duplicate snippet*/
+/* This error component is used whenever there's a need to display an error (or success message) returned from back-end, such as when trying to post a duplicate snippet*/
 
 import React from "react";
 export const Error = (props) => {

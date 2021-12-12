@@ -1,5 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 function Topbar() {
+  const navigate = useNavigate();
+
+  const login = () => {
+    navigate("/login");
+  };
+
+  const register = () => {
+    navigate("/register");
+  };
+
   return (
     <div
       style={{
@@ -16,8 +27,9 @@ function Topbar() {
     >
       <h1 style={{ fontSize: 35 }}>Welcome to Snipper!</h1>
       <div style={{ padding: 10 }}>
-        <button>Login</button>
-        <button>Register</button>
+        <button onClick={login}>Login</button>
+        <button onClick={register}>Register</button>
+        <button>Logout</button>
       </div>
     </div>
   );

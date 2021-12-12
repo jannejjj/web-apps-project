@@ -72,8 +72,8 @@ const SnippetForm = () => {
             placeholder="Code"
             onChange={(e) => setSnippet(e.target.value)}
           />
+          <input type="submit" value="Post" />
         </label>
-        <input type="submit" value="Post" />
       </form>
     </div>
   );

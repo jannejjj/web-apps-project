@@ -8,7 +8,6 @@ const Comment = require("../models/Comment");
 
 // Checks if an identical snippet exists and if not, saves the snippet to database and returns 200. Otherwise returns 403.
 router.post("/snippet/", function (req, res, next) {
-  console.log(req.body);
   Snippet.findOne({ snippet: req.body.snippet }, (err, snippet) => {
     if (err) return next(err);
     if (!snippet) {

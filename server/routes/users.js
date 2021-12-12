@@ -40,7 +40,9 @@ router.post(
               isAdmin: false,
             }).save((err) => {
               if (err) return next(err);
-              return res.status(200).send("User registered successfully.");
+              return res
+                .status(200)
+                .json({ message: "User registered successfully!" });
             });
           });
         });
