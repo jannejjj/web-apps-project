@@ -21,6 +21,7 @@ const SnippetForm = () => {
       "." +
       curDate.getFullYear();
 
+    console.log(localStorage.getItem("authtoken"));
     console.log(title);
     console.log(snippet);
     console.log(timestamp);
@@ -28,6 +29,7 @@ const SnippetForm = () => {
     fetch("../api/snippet/", {
       method: "POST",
       headers: {
+        Authorization: localStorage.getItem("authtoken"),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

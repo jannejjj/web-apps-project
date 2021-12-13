@@ -12,7 +12,6 @@ function Feed() {
     fetch("api/snippets/")
       .then((response) => response.json())
       .then((json) => {
-        console.log(json);
         if (json.error) {
           setSnippets(json.error);
         } else if (json.length === 0) {

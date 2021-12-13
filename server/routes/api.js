@@ -3,11 +3,12 @@ var router = express.Router();
 const mongoose = require("mongoose");
 const Snippet = require("../models/Snippet");
 const Comment = require("../models/Comment");
+const validateToken = require("../auth/validateToken");
 
 // ********** SNIPPETS ********** //
 
 // Checks if an identical snippet exists and if not, saves the snippet to database and returns 200. Otherwise returns 403.
-router.post("/snippet/", function (req, res, next) {
+router.post("/snippet/", validateToken, function (req, res, next) {
   Snippet.findOne({ snippet: req.body.snippet }, (err, snippet) => {
     if (err) return next(err);
     if (!snippet) {
@@ -64,7 +65,7 @@ router.post('/snippet/downvote/:flag', function(req, res, next) {
 }) */
 
 // Finds snippet by req.body.id and removes it. Then removes all comments whose snippetid = req.body.id
-router.post("/snippet/delete/", function (req, res, next) {
+router.post("/snippet/delete/", validateToken, function (req, res, next) {
   Snippet.findByIdAndRemove(req.body.id, function (err, snippet) {
     if (err) return next(err);
     if (!snippet) {
@@ -93,7 +94,7 @@ router.post("/snippet/delete/", function (req, res, next) {
 // ********* COMMENTS ********** //
 
 // Basically identical to POSTing a snippet. Checks if an identical comment exists and if not, creates one and saves it to db
-router.post("/comment/", function (req, res, next) {
+router.post("/comment/", validateToken, function (req, res, next) {
   Comment.findOne(
     { snippetid: req.body.snippetid, comment: req.body.comment },
     function (err, comment) {

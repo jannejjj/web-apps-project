@@ -70,7 +70,7 @@ router.post("/login", body("email").trim().escape(), (req, res, next) => {
             jwtPayload,
             process.env.SECRET,
             {
-              expiresIn: 180,
+              expiresIn: 600, // 10 minutes shall suffice for this purpose
             },
             (err, token) => {
               console.log(token);

@@ -7,7 +7,6 @@ function LoginPage() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,8 +27,7 @@ function LoginPage() {
           setError(json.error);
         } else {
           setError(json.message);
-          setToken(json.token);
-          localStorage.setItem("authtoken", token);
+          localStorage.setItem("authtoken", json.token);
         }
       });
   };
@@ -50,7 +48,7 @@ function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            type="text"
+            type="password"
             value={password}
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}

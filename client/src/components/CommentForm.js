@@ -25,6 +25,7 @@ export const CommentForm = ({ snippetid }) => {
     fetch("../api/comment/", {
       method: "POST",
       headers: {
+        Authorization: localStorage.getItem("authtoken"),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
