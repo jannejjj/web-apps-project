@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 function Topbar() {
   const navigate = useNavigate();
 
+  const logout = () => {
+    localStorage.removeItem("authtoken");
+    navigate("/");
+  };
+
   const login = () => {
     navigate("/login");
   };
@@ -29,7 +34,7 @@ function Topbar() {
       <div style={{ padding: 10 }}>
         <button onClick={login}>Login</button>
         <button onClick={register}>Register</button>
-        <button>Logout</button>
+        <button onClick={logout}>Logout</button>
       </div>
     </div>
   );

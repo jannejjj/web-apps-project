@@ -56,12 +56,12 @@ router.post("/login", body("email").trim().escape(), (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err) throw err;
     if (!user) {
-      return res.status(403).json({ message: "Invalid credentials" });
+      return res.status(403).json({ error: "Invalid credentials" });
     } else {
       bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
         if (err) throw err;
         if (!isMatch) {
-          return res.status(403).json({ message: "Invalid credentials" });
+          return res.status(403).json({ error: "Invalid credentials" });
         } else {
           const jwtPayload = {
             email: user.email,
@@ -73,7 +73,10 @@ router.post("/login", body("email").trim().escape(), (req, res, next) => {
               expiresIn: 180,
             },
             (err, token) => {
-              res.status(200).json({ token: token });
+              console.log(token);
+              res
+                .status(200)
+                .json({ message: "Logged in successfully!", token: token });
             }
           );
         }
