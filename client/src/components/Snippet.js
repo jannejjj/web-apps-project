@@ -1,4 +1,5 @@
 import React from "react";
+
 export const Snippet = (props) => {
   const upVote = (id) => {
     // Pitänee keksiä miten nää votet vois tehä
@@ -20,7 +21,9 @@ export const Snippet = (props) => {
       }}
     >
       <p style={{ margin: 4, fontSize: 25 }}>{props.data.title}</p>
-      <code> {props.data.snippet}</code>
+      <pre>
+        <code> {props.data.snippet}</code>
+      </pre>
       <div>
         <button onClick={upVote} style={{ margin: 6 }}>
           {props.data.upvotes} 👍

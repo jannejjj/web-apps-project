@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 function Topbar() {
   const navigate = useNavigate();
+  const authtoken = localStorage.getItem("authtoken");
 
   const logout = () => {
     localStorage.removeItem("authtoken");
@@ -32,9 +33,9 @@ function Topbar() {
     >
       <h1 style={{ fontSize: 35 }}>Welcome to Snipper!</h1>
       <div style={{ padding: 10 }}>
-        <button onClick={login}>Login</button>
-        <button onClick={register}>Register</button>
-        <button onClick={logout}>Logout</button>
+        {!authtoken && <button onClick={login}>Login</button>}
+        {!authtoken && <button onClick={register}>Register</button>}
+        {authtoken && <button onClick={logout}>Logout</button>}
       </div>
     </div>
   );

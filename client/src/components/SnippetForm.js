@@ -29,7 +29,7 @@ const SnippetForm = () => {
     fetch("../api/snippet/", {
       method: "POST",
       headers: {
-        Authorization: localStorage.getItem("authtoken"),
+        authorization: localStorage.getItem("authtoken"),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -55,7 +55,7 @@ const SnippetForm = () => {
       style={{
         margin: "auto",
         width: 700,
-        paddingTop: 225,
+        paddingTop: 50,
       }}
     >
       <Error error={error} />
@@ -68,12 +68,12 @@ const SnippetForm = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <input
-            type="text"
-            value={snippet}
+          <textarea
             placeholder="Code"
+            value={snippet}
             onChange={(e) => setSnippet(e.target.value)}
-          />
+            style={{ borderRadius: 5 }}
+          ></textarea>
           <input type="submit" value="Post" />
         </label>
       </form>

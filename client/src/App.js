@@ -2,7 +2,6 @@ import "./App.css";
 import Feed from "./components/Feed";
 import Topbar from "./components/Topbar";
 import SnippetPage from "./components/SnippetPage";
-import SnippetForm from "./components/SnippetForm";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import RegisterPage from "./components/RegisterPage";
@@ -18,7 +17,6 @@ function App() {
             element={
               <div>
                 <Topbar />
-                <SnippetForm />
                 <Feed />
               </div>
             }

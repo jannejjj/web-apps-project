@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import CommentForm from "./CommentForm";
 
 function SnippetPage() {
+  const authtoken = localStorage.getItem("authtoken");
   const { id } = useParams();
 
   const [error, setError] = useState("");
@@ -44,7 +45,7 @@ function SnippetPage() {
   return (
     <div style={{ paddingTop: 175 }}>
       <Snippet data={snippet} />
-      <CommentForm snippetid={id} />
+      {authtoken && <CommentForm snippetid={id} />}
       <h3 style={{ fontSize: 30 }}>Comments:</h3>
       <Error error={error} />
       <div
