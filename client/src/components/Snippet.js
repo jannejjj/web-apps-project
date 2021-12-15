@@ -20,6 +20,7 @@ export const Snippet = (props) => {
         width: 700,
         borderRadius: 10,
         padding: 5,
+        whiteSpace: "pre-wrap",
       }}
     >
       <p style={{ margin: 4, fontSize: 25 }}>{props.data.title}</p>

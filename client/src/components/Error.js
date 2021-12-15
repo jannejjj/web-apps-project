@@ -9,6 +9,7 @@ export const Error = (props) => {
         color: "gray",
         fontStyle: "italic",
         margin: "auto",
+        whiteSpace: "pre-wrap",
       }}
     >
       {props.error}

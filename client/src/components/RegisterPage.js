@@ -23,8 +23,16 @@ function RegisterPage() {
     })
       .then((response) => response.json())
       .then((json) => {
+        console.log(json);
         if (json.error) {
           setError(json.error);
+        } else if (json.passwordErrors) {
+          let errors = "";
+          json.passwordErrors.forEach((error) => {
+            errors += error.message + "\n";
+          });
+          console.log(errors);
+          setError(errors);
         } else {
           setError(json.message);
         }

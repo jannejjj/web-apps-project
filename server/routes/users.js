@@ -6,22 +6,45 @@ var _require = require("express-validator"),
   body = _require.body,
   validationResult = _require.validationResult;
 
+var passwordValidator = require("password-validator");
 const User = require("../models/User");
 const validateToken = require("../auth/validateToken");
 const mongoose = require("mongoose");
+const schema = new passwordValidator();
+
+// prettier-ignore
+schema
+  .is().min(8, "Password needs to be at least 8 characters long.\n")
+  .is().max(255, "Password too long!\n")
+  .has().lowercase(
+  1,
+  "Password needs to contain at lowercase characters (at least one).\n"
+)
+  .has().uppercase(
+  1,
+  "Password needs to contain uppercase characters (at least one).\n"
+)
+  .has().digits(1, "Password needs to contain at least 1 number!\n")
 
 // Registration - Validates email and password, checks if a user with the same email exists, hashes the password and adds a new user to the database.
 router.post(
   "/register",
   body("email").isEmail().trim().escape(),
-  body("password").isLength({ min: 8 }),
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res
-        .status(403)
-        .json({ error: "Email or password doesn't meet requirements." });
+    const emailErrors = validationResult(req);
+    if (!emailErrors.isEmpty()) {
+      return res.status(403).json({ error: "Email isn't a proper email." });
     }
+
+    const passwordErrors = schema.validate(req.body.password, {
+      details: true,
+    });
+
+    console.log(passwordErrors);
+    if (passwordErrors != []) {
+      return res.status(403).json({ passwordErrors: passwordErrors });
+    }
+
     User.findOne({ email: req.body.email }, (err, user) => {
       if (err) throw err;
       if (user) {
@@ -110,6 +133,26 @@ router.post("/delete", body("email").trim().escape(), (req, res, next) => {
   });
 });
 
-router.post("whoami");
+router.post("/whoami", (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  let token;
+  if (authHeader == undefined || authHeader === null) {
+    return res.status(401).json({ error: "You are not logged in!" });
+  } else {
+    token = authHeader.split(" ")[1];
+  }
+  jwt.verify(token, process.env.SECRET, (err, data) => {
+    return res.status(401).json({ error: "You are not logged in!" });
+  });
+  let userid = data.id;
+
+  User.findById(userid, function (err, user) {
+    if (!user) {
+      return res.status(404).json({ error: "No user was found with the ID" }); // this should never happen
+    } else {
+      return res.status(200).json({ userid: userid });
+    }
+  });
+});
 
 module.exports = router;
