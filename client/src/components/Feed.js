@@ -27,7 +27,14 @@ function Feed() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ marginTop: 30, paddingTop: 175 }}>
+    <div
+      style={{
+        marginTop: 30,
+        paddingTop: 175,
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}
+    >
       {authtoken && <SnippetForm />}
       <Error error={error} />
       {snippets.map((snippet) => (
