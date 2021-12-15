@@ -9,6 +9,8 @@ export const Snippet = (props) => {
     // Tarkasta onko user votennu jo tätä snippettiä
   };
 
+  const edit = (id) => {};
+
   return (
     <div
       onClick={props.onClick}
@@ -30,6 +32,9 @@ export const Snippet = (props) => {
         </button>
         <button onClick={downVote} style={{ margin: 6 }}>
           {props.data.downvotes} 👎
+        </button>
+        <button onClick={edit} style={{ margin: 6 }}>
+          Edit
         </button>
       </div>
       <span>{props.data.timestamp}</span>

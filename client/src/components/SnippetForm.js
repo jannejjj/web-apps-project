@@ -29,7 +29,7 @@ const SnippetForm = () => {
     fetch("../api/snippet/", {
       method: "POST",
       headers: {
-        authorization: localStorage.getItem("authtoken"),
+        authorization: "Bearer " + localStorage.getItem("authtoken"),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

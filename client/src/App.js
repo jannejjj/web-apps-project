@@ -15,7 +15,7 @@ function App() {
           <Route
             path="/"
             element={
-              <div>
+              <div style={{ margin: "auto", width: 900 }}>
                 <Topbar />
                 <Feed />
               </div>
@@ -24,7 +24,7 @@ function App() {
           <Route
             path="/snippet/:id"
             element={
-              <div>
+              <div style={{ margin: "auto", width: 900 }}>
                 <Topbar />
                 <SnippetPage />
               </div>

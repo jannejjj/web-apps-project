@@ -21,7 +21,7 @@ function Topbar() {
     <div
       style={{
         backgroundColor: "#4fc3f7",
-        width: 1000,
+        width: 900,
         borderRadius: 10,
         position: "absolute",
         marginLeft: "auto",

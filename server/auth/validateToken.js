@@ -2,11 +2,11 @@ const jwt = require("jsonwebtoken");
 
 module.exports = function (req, res, next) {
   const authHeader = req.headers["authorization"];
-  let token = authHeader;
+  let token;
   if (authHeader == undefined || authHeader === null) {
     return res.status(401).json({ error: "You are not logged in!" });
   } else {
-    token = authHeader;
+    token = authHeader.split(" ")[1];
   }
   console.log(authHeader);
 

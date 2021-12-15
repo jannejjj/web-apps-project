@@ -65,6 +65,7 @@ router.post("/login", body("email").trim().escape(), (req, res, next) => {
         } else {
           const jwtPayload = {
             email: user.email,
+            id: user._id,
           };
           jwt.sign(
             jwtPayload,
@@ -108,5 +109,7 @@ router.post("/delete", body("email").trim().escape(), (req, res, next) => {
     }
   });
 });
+
+router.post("whoami");
 
 module.exports = router;
