@@ -68,12 +68,18 @@ const SnippetForm = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <textarea
-            placeholder="Code"
-            value={snippet}
-            onChange={(e) => setSnippet(e.target.value)}
-            style={{ borderRadius: 5 }}
-          ></textarea>
+          <pre>
+            <textarea
+              placeholder="Code"
+              value={snippet}
+              onChange={(e) => setSnippet(e.target.value)}
+              style={{
+                borderRadius: 5,
+                fontFamily: "Consolas",
+                fontSize: 16,
+              }}
+            ></textarea>
+          </pre>
           <input type="submit" value="Post" />
         </label>
       </form>
