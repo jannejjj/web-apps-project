@@ -38,6 +38,10 @@ function RegisterPage() {
       });
   };
 
+  const proceedToLogin = () => {
+    navigate("/login");
+  };
+
   const backToMain = () => {
     navigate("/");
   };
@@ -62,7 +66,8 @@ function RegisterPage() {
           <input type="submit" value="Register" />
         </label>
       </form>
-      <input type="button" value="Back to the main page" onClick={backToMain} />
+      <input type="button" value="Proceed to login" onClick={proceedToLogin} />
+      <input type="button" value="Back to main page" onClick={backToMain} />
     </div>
   );
 }

@@ -38,6 +38,7 @@ function Feed() {
       .then((json) => {
         if (json.error) {
           console.log(json.error);
+          localStorage.removeItem("authtoken"); // if token is expired
         } else {
           setUserid(json.userid);
         }
@@ -62,6 +63,7 @@ function Feed() {
           loggedUser={userid}
           userid={snippet.userid}
           key={snippet._id}
+          id={snippet._id}
           data={snippet}
           onClick={() => navigate("/snippet/" + snippet._id)}
         />

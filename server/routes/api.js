@@ -5,7 +5,7 @@ const Snippet = require("../models/Snippet");
 const Comment = require("../models/Comment");
 const validateToken = require("../auth/validateToken");
 
-// ********** SNIPPETS ********** //
+// * * * * * Snippets * * * * * * //
 
 // Checks if an identical snippet exists and if not, saves the snippet to database.
 router.post("/snippet/", validateToken, function (req, res, next) {
@@ -31,7 +31,7 @@ router.post("/snippet/", validateToken, function (req, res, next) {
   });
 });
 
-// Simply finds all snippets and returns them as a list of JSON objects. This is used for getting the snippets into the feed in front-end
+// Simply finds all snippets and returns them as a list of JSON objects. Used for getting the snippets into the feed in front-end
 router.get("/snippets/", async function (req, res, next) {
   const snippets = await Snippet.find({}).catch((err) =>
     res.send({ error: err })
@@ -39,7 +39,7 @@ router.get("/snippets/", async function (req, res, next) {
   res.json(snippets);
 });
 
-// Gets a specific snippet by id, returns the snippet as JSON
+// Finds a specific snippet by id, returns the snippet as JSON
 router.get("/snippet/:id", function (req, res, next) {
   const { id } = req.params;
   Snippet.findById(id, (err, snippet) => {
@@ -52,10 +52,11 @@ router.get("/snippet/:id", function (req, res, next) {
   });
 });
 
-router.post("/snippet/edit/", validateToken, function (req, res, next) {
+// Finds desired snippet by id and updates it.
+router.post("/snippet/edit", validateToken, function (req, res, next) {
   Snippet.findByIdAndUpdate(
     req.body.id,
-    { snippet: req.body.comment },
+    { snippet: req.body.snippet, timestamp: req.body.timestamp },
     function (err, snippet) {
       if (err) return next(err);
       return res.status(200).json({ message: "Updated snippet" + snippet._id });
@@ -63,7 +64,7 @@ router.post("/snippet/edit/", validateToken, function (req, res, next) {
   );
 });
 
-// Finds snippet by req.body.id and removes it. Then removes all comments whose snippetid = req.body.id. Only available through API, not the UI.
+// Finds snippet by req.body.id and removes it. Then removes all comments whose snippetid = req.body.id. Only available through API, not the UI. Would've been used for the admin account but decided not to implement it in the end.
 router.post("/snippet/delete/", validateToken, function (req, res, next) {
   Snippet.findByIdAndRemove(req.body.id, function (err, snippet) {
     if (err) return next(err);
@@ -89,6 +90,8 @@ router.post("/snippet/delete/", validateToken, function (req, res, next) {
     }
   });
 });
+
+// * * * * * Comments * * * * * * //
 
 // Basically identical to POSTing a snippet. Checks if an identical comment exists and if not, creates one and saves it to db.
 router.post("/comment/", validateToken, function (req, res, next) {
@@ -119,15 +122,16 @@ router.post("/comment/", validateToken, function (req, res, next) {
   );
 });
 
+// Finds desired comment by id and updates it.
 router.post("/comment/edit", validateToken, function (req, res, next) {
-  console.log(req);
   Comment.findByIdAndUpdate(
     { _id: req.body.id },
-    { comment: req.body.comment },
+    { comment: req.body.comment, timestamp: req.body.timestamp },
     function (err, comment) {
       if (err) return next(err);
-      console.log(comment);
-      return res.status(200).json({ message: "Updated comment" + comment._id });
+      return res
+        .status(200)
+        .json({ message: "Updated comment " + comment._id });
     }
   );
 });

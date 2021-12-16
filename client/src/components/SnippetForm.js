@@ -21,6 +21,7 @@ const SnippetForm = () => {
       .then((json) => {
         if (json.error) {
           console.log(json.error);
+          localStorage.removeItem("authtoken"); // if token is expired
         } else {
           setUserid(json.userid);
         }
@@ -29,6 +30,7 @@ const SnippetForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const curDate = new Date();
     // Ugly as sin but returns date in mm.hh.dd.MM.YYYY
     const timestamp =
@@ -65,10 +67,12 @@ const SnippetForm = () => {
       .then((json) => {
         if (json.error) {
           setError(json.error);
+          localStorage.removeItem("authtoken"); // If token is expired
         } else {
           setError("");
         }
       });
+    window.location.reload();
   };
 
   return (
