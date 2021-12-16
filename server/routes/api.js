@@ -17,8 +17,6 @@ router.post("/snippet/", validateToken, function (req, res, next) {
         title: req.body.title,
         snippet: req.body.snippet,
         timestamp: req.body.timestamp,
-        upvotes: req.body.upvotes,
-        downvotes: req.body.downvotes,
       }).save((err, snippet) => {
         if (err) return next(err);
         res.json(snippet);
@@ -105,8 +103,6 @@ router.post("/comment/", validateToken, function (req, res, next) {
           userid: req.body.userid,
           comment: req.body.comment,
           timestamp: req.body.timestamp,
-          upvotes: req.body.upvotes,
-          downvotes: req.body.downvotes,
           snippetid: req.body.snippetid,
         }).save((err, comment) => {
           if (err) return next(err);

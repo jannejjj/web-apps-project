@@ -63,8 +63,6 @@ const SnippetForm = (props) => {
         title: title,
         snippet: snippet,
         timestamp: timestamp,
-        upvotes: 0,
-        downvotes: 0,
       }),
     })
       .then((response) => response.json())

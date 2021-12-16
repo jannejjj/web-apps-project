@@ -8,8 +8,6 @@ let commentSchema = new Schema({
   snippetid: { type: String },
   comment: { type: String },
   timestamp: { type: String },
-  upvotes: { type: Number },
-  downvotes: { type: Number },
 });
 
 module.exports = mongoose.model("Comment", commentSchema);
