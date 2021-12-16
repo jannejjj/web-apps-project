@@ -12,7 +12,7 @@ export const Comment = (props) => {
 
   const edit = () => {
     const id = props.id;
-
+    const editComment = props.editComment;
     // Ugly as sin but returns date in mm.hh.dd.MM.YYYY
     const curDate = new Date();
     const timestamp =
@@ -40,10 +40,10 @@ export const Comment = (props) => {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json.message);
+        editComment(json);
       });
     setEditing(0);
-    window.location.reload();
+    //window.location.reload();
   };
 
   // The comment is in <p> and timestamp is in <span>. Edit <button> is shown if the comment's userid is the same as the logged in user's. Furthermore, if the editing button has been toggled, the <textarea> and <button> for editing the comment are shown. When the confirmation button is pressed, edit() is run

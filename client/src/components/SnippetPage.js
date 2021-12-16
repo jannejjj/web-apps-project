@@ -15,6 +15,30 @@ function SnippetPage() {
   const [comments, setComments] = useState([]);
   const [snippet, setSnippet] = useState({});
 
+  useEffect(() => {
+    console.log(comments);
+  }, [comments]);
+
+  const addComment = (newComment) => {
+    setComments((comments) => [...comments, newComment]);
+    setError("");
+  };
+
+  const editComment = (editedComment) => {
+    const newComments = comments.map((comment) => {
+      if (comment._id === editedComment._id) {
+        return editedComment;
+      } else {
+        return comment;
+      }
+    });
+    setComments(newComments);
+  };
+
+  const editSnippet = (editedSnippet) => {
+    setSnippet(editedSnippet);
+  };
+
   // Fetch the snippet
   useEffect(() => {
     fetch("../api/snippet/" + id)
@@ -67,12 +91,15 @@ function SnippetPage() {
   return (
     <div style={{ paddingTop: 175 }}>
       <Snippet
+        editSnippet={editSnippet}
         loggedUser={userid}
         userid={snippet.userid}
         key={snippet._id}
+        id={snippet._id}
         data={snippet}
       />
-      {authtoken && <CommentForm snippetid={id} />}
+
+      {authtoken && <CommentForm snippetid={id} addComment={addComment} />}
       <h3 style={{ fontSize: 30 }}>Comments:</h3>
       <Error error={error} />
       <div
@@ -85,6 +112,8 @@ function SnippetPage() {
       >
         {comments.map((comment) => (
           <Comment
+            editComment={editComment}
+            addComment={addComment}
             key={comment._id}
             id={comment._id}
             loggedUser={userid}

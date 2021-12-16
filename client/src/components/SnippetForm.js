@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Error from "./Error";
-const SnippetForm = () => {
+const SnippetForm = (props) => {
   const [snippet, setSnippet] = useState("");
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
@@ -28,6 +28,10 @@ const SnippetForm = () => {
       });
   }, [authtoken]);
 
+  const getMinutesWithZeros = (curDate) => {
+    return (curDate.getMinutes() < 10 ? "0" : "") + curDate.getMinutes();
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -36,7 +40,7 @@ const SnippetForm = () => {
     const timestamp =
       curDate.getHours() +
       ":" +
-      curDate.getMinutes() +
+      getMinutesWithZeros(curDate) +
       " - " +
       curDate.getDate() +
       "." +
@@ -70,9 +74,11 @@ const SnippetForm = () => {
           localStorage.removeItem("authtoken"); // If token is expired
         } else {
           setError("");
+          console.log(json);
+          props.addSnippet(json);
         }
       });
-    window.location.reload();
+    //window.location.reload();
   };
 
   return (

@@ -11,12 +11,28 @@ function Feed() {
   const [error, setError] = useState("");
   const [userid, setUserid] = useState("");
 
+  const addSnippet = (newSnippet) => {
+    setSnippets((snippets) => [...snippets, newSnippet]);
+    setError("");
+  };
+
+  const editSnippet = (editedSnippet) => {
+    const newSnippets = snippets.map((snippet) => {
+      if (snippet._id === editedSnippet._id) {
+        return editedSnippet;
+      } else {
+        return snippet;
+      }
+    });
+    setSnippets(newSnippets);
+  };
+
   useEffect(() => {
     fetch("api/snippets/")
       .then((response) => response.json())
       .then((json) => {
         if (json.error) {
-          setSnippets(json.error);
+          setError(json.error);
         } else if (json.length === 0) {
           setError("Not a single Snippet has been posted yet!");
         } else {
@@ -56,10 +72,12 @@ function Feed() {
         marginRight: "auto",
       }}
     >
-      {authtoken && <SnippetForm />}
+      {authtoken && <SnippetForm addSnippet={addSnippet} />}
       <Error error={error} />
       {snippets.map((snippet) => (
         <Snippet
+          editSnippet={editSnippet}
+          addSnippet={addSnippet}
           loggedUser={userid}
           userid={snippet.userid}
           key={snippet._id}

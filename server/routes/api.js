@@ -19,9 +19,9 @@ router.post("/snippet/", validateToken, function (req, res, next) {
         timestamp: req.body.timestamp,
         upvotes: req.body.upvotes,
         downvotes: req.body.downvotes,
-      }).save((err) => {
+      }).save((err, snippet) => {
         if (err) return next(err);
-        return res.status(200).json({ message: "Saved snippet to database." });
+        res.json(snippet);
       });
     } else {
       return res
@@ -47,7 +47,7 @@ router.get("/snippet/:id", function (req, res, next) {
     if (!snippet) {
       res.status(404).json({ error: "No snippet found with the given id!" });
     } else {
-      res.json(snippet);
+      return res.status(200).json(snippet);
     }
   });
 });
@@ -55,11 +55,12 @@ router.get("/snippet/:id", function (req, res, next) {
 // Finds desired snippet by id and updates it.
 router.post("/snippet/edit", validateToken, function (req, res, next) {
   Snippet.findByIdAndUpdate(
-    req.body.id,
+    { _id: req.body.id },
     { snippet: req.body.snippet, timestamp: req.body.timestamp },
+    { new: true },
     function (err, snippet) {
       if (err) return next(err);
-      return res.status(200).json({ message: "Updated snippet" + snippet._id });
+      return res.status(200).json(snippet);
     }
   );
 });
@@ -107,11 +108,9 @@ router.post("/comment/", validateToken, function (req, res, next) {
           upvotes: req.body.upvotes,
           downvotes: req.body.downvotes,
           snippetid: req.body.snippetid,
-        }).save((err) => {
+        }).save((err, comment) => {
           if (err) return next(err);
-          return res
-            .status(200)
-            .json({ message: "Saved comment to database." });
+          return res.status(200).json(comment);
         });
       } else {
         return res
@@ -124,14 +123,15 @@ router.post("/comment/", validateToken, function (req, res, next) {
 
 // Finds desired comment by id and updates it.
 router.post("/comment/edit", validateToken, function (req, res, next) {
+  console.log(req.body.comment, req.body.timestamp);
   Comment.findByIdAndUpdate(
     { _id: req.body.id },
     { comment: req.body.comment, timestamp: req.body.timestamp },
+    { new: true },
     function (err, comment) {
       if (err) return next(err);
-      return res
-        .status(200)
-        .json({ message: "Updated comment " + comment._id });
+      console.log(comment);
+      return res.status(200).json(comment);
     }
   );
 });
@@ -142,7 +142,6 @@ router.get("/comments/:id", async function (req, res, next) {
   const comments = await Comment.find({ snippetid: id }).catch((err) =>
     res.send({ error: err })
   );
-  console.log(comments);
   res.json(comments);
 });
 

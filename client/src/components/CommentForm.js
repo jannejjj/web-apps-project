@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Error from "./Error";
 
-export const CommentForm = ({ snippetid }) => {
+export const CommentForm = ({ snippetid, addComment }) => {
   const authtoken = localStorage.getItem("authtoken");
   const [comment, setComment] = useState("");
   const [error, setError] = useState("");
@@ -28,6 +28,10 @@ export const CommentForm = ({ snippetid }) => {
       });
   }, [authtoken]);
 
+  const getMinutesWithZeros = (curDate) => {
+    return (curDate.getMinutes() < 10 ? "0" : "") + curDate.getMinutes();
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -36,7 +40,7 @@ export const CommentForm = ({ snippetid }) => {
     const timestamp =
       curDate.getHours() +
       ":" +
-      curDate.getMinutes() +
+      getMinutesWithZeros(curDate) +
       " - " +
       curDate.getDate() +
       "." +
@@ -66,9 +70,9 @@ export const CommentForm = ({ snippetid }) => {
           localStorage.removeItem("authtoken"); // If token is expired
         } else {
           setError("");
+          addComment(json);
         }
       });
-    window.location.reload();
   };
 
   return (

@@ -11,7 +11,7 @@ export const Snippet = (props) => {
     return (curDate.getMinutes() < 10 ? "0" : "") + curDate.getMinutes();
   };
 
-  const edit = () => {
+  const editSnippet = () => {
     const id = props.id;
 
     // Ugly as sin but returns date in mm.hh.dd.MM.YYYY
@@ -41,10 +41,8 @@ export const Snippet = (props) => {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json.message);
+        props.editSnippet(json);
       });
-    setEditing(0);
-    window.location.reload();
   };
 
   // Snippet title is in <p>, code is in <code> and timestamp is in <span>. Edit <button> is shown if the snippet's userid is the same as the logged in user's. Furthermore, if the editing button has been toggled, the <textarea> and <button> for editing the snippet are shown. When the confirmation button is pressed, edit() is run.
@@ -60,9 +58,12 @@ export const Snippet = (props) => {
       }}
     >
       <p style={{ margin: 4, fontSize: 25 }}>{props.data.title}</p>
-      <pre>
-        <code onClick={props.onClick}> {props.data.snippet}</code>
-      </pre>
+      <div
+        onClick={props.onClick}
+        style={{ textAlign: "left", fontFamily: "consolas", paddingLeft: 50 }}
+      >
+        {props.data.snippet}
+      </div>
       <div>
         {props.loggedUser === props.userid && (
           <button
@@ -86,7 +87,7 @@ export const Snippet = (props) => {
                 backgroundColor: "white",
               }}
             ></textarea>
-            <button onClick={edit}>Confirm edit</button>
+            <button onClick={editSnippet}>Confirm edit</button>
           </div>
         )}
       </div>
