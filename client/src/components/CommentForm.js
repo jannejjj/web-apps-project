@@ -8,7 +8,7 @@ export const CommentForm = ({ snippetid, addComment }) => {
   const [error, setError] = useState("");
   const [userid, setUserid] = useState("");
 
-  // Get id of currently logged in user
+  // Gets id of currently logged in user from authtoken
   useEffect(() => {
     fetch("../users/whoami", {
       method: "GET",
@@ -28,10 +28,14 @@ export const CommentForm = ({ snippetid, addComment }) => {
       });
   }, [authtoken]);
 
+  // getMinutes() returns a single digit if the value is less than 0 so needs this. If getMinutes() < 10, adds a 0 in front.
   const getMinutesWithZeros = (curDate) => {
     return (curDate.getMinutes() < 10 ? "0" : "") + curDate.getMinutes();
   };
 
+  // Sends the comment, timestamp, snippetid and userid to the server.
+  // When the server responds with the saved comment, calls addComment()
+  // Which refreshes the comment list on the snippet page.
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -59,8 +63,6 @@ export const CommentForm = ({ snippetid, addComment }) => {
         snippetid: snippetid,
         comment: comment,
         timestamp: timestamp,
-        upvotes: 0,
-        downvotes: 0,
       }),
     })
       .then((response) => response.json())
@@ -75,6 +77,7 @@ export const CommentForm = ({ snippetid, addComment }) => {
       });
   };
 
+  // A div containing the error container and the form for submitting a comment. The contents of the input field are saved in the comment state.
   return (
     <div
       style={{

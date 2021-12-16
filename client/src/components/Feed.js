@@ -11,11 +11,13 @@ function Feed() {
   const [error, setError] = useState("");
   const [userid, setUserid] = useState("");
 
+  // Refreshes the snippet list so that it includes the new snippet
   const addSnippet = (newSnippet) => {
     setSnippets((snippets) => [...snippets, newSnippet]);
     setError("");
   };
 
+  // Refreshes the snippet list to include the edited snippet in the same place as it was previously
   const editSnippet = (editedSnippet) => {
     const newSnippets = snippets.map((snippet) => {
       if (snippet._id === editedSnippet._id) {
@@ -27,6 +29,7 @@ function Feed() {
     setSnippets(newSnippets);
   };
 
+  // Fetches all snippets from db to be displayed in the feed
   useEffect(() => {
     fetch("api/snippets/")
       .then((response) => response.json())
@@ -41,7 +44,7 @@ function Feed() {
       });
   }, []);
 
-  // Get id of currently logged in user
+  // Gets id of currently logged in user from authtoken
   useEffect(() => {
     fetch("users/whoami", {
       method: "GET",
@@ -63,6 +66,7 @@ function Feed() {
 
   const navigate = useNavigate();
 
+  // Returns a div with a form for posting a new snipped and the list of existing snippets in the database. The form is only visible if authtoken exists i.e. user is logged in. When user clicks on the code snippet, they are redirected to the snippet's page
   return (
     <div
       style={{

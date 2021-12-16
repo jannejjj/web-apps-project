@@ -8,6 +8,7 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Sends email and password to be registered to the database. If the returned json contains an error field, the contents are displayed. Errors are related to the password being incorrect or the email not being a proper email. Otherwise the contents of json.message are displayed
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -36,6 +37,7 @@ function LoginPage() {
     navigate("/");
   };
 
+  // A div containing the error container, a form for logging in and a button for returning to the main page.
   return (
     <div style={{ paddingTop: 200, width: 700, margin: "auto" }}>
       <Error error={error} />

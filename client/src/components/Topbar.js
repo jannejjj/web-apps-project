@@ -17,6 +17,7 @@ function Topbar() {
     navigate("/register");
   };
 
+  // A div containing a header and buttons. Login and register are only shown to users not logged in, logout is shown to logged in users
   return (
     <div
       style={{

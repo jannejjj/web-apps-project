@@ -10,9 +10,13 @@ export const Comment = (props) => {
     return (curDate.getMinutes() < 10 ? "0" : "") + curDate.getMinutes();
   };
 
+  // Sends the comment's id and new comment + timestamp to be updated.
+  // After the server returns the updated comment, calls editComment() which
+  // refreshes the comment list on the snippet page.
   const edit = () => {
     const id = props.id;
     const editComment = props.editComment;
+
     // Ugly as sin but returns date in mm.hh.dd.MM.YYYY
     const curDate = new Date();
     const timestamp =
@@ -43,7 +47,6 @@ export const Comment = (props) => {
         editComment(json);
       });
     setEditing(0);
-    //window.location.reload();
   };
 
   // The comment is in <p> and timestamp is in <span>. Edit <button> is shown if the comment's userid is the same as the logged in user's. Furthermore, if the editing button has been toggled, the <textarea> and <button> for editing the comment are shown. When the confirmation button is pressed, edit() is run

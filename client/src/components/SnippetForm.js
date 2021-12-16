@@ -8,7 +8,7 @@ const SnippetForm = (props) => {
   const [userid, setUserid] = useState("");
   const authtoken = localStorage.getItem("authtoken");
 
-  // Get id of currently logged in user
+  // Gets id of currently logged in user from authtoken
   useEffect(() => {
     fetch("users/whoami", {
       method: "GET",
@@ -28,10 +28,12 @@ const SnippetForm = (props) => {
       });
   }, [authtoken]);
 
+  // getMinutes() returns a single digit if the value is less than 0 so needs this. If getMinutes() < 10, adds a 0 in front.
   const getMinutesWithZeros = (curDate) => {
     return (curDate.getMinutes() < 10 ? "0" : "") + curDate.getMinutes();
   };
 
+  // Sends title, snippet, userid and timestamp to be saved into db. If the response has an "error" field, the contents of it are displayed and authtoken is removed (errors can basically only be related to missing login/token expiry). Otherwise the error container is emptied and addSnippet is called, which refreshes the list of snippets
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -76,9 +78,9 @@ const SnippetForm = (props) => {
           props.addSnippet(json);
         }
       });
-    //window.location.reload();
   };
 
+  // A div containing the error container and the form for submitting a new snippet. The form is only displayed if authtoken exists i.e. user is logged in
   return (
     <div
       style={{

@@ -15,15 +15,13 @@ function SnippetPage() {
   const [comments, setComments] = useState([]);
   const [snippet, setSnippet] = useState({});
 
-  useEffect(() => {
-    console.log(comments);
-  }, [comments]);
-
+  // Refreshes the comment list to include the new comment
   const addComment = (newComment) => {
     setComments((comments) => [...comments, newComment]);
     setError("");
   };
 
+  // Refreshes the comment list to include the edited comment in the same place as it was previously
   const editComment = (editedComment) => {
     const newComments = comments.map((comment) => {
       if (comment._id === editedComment._id) {
@@ -68,7 +66,7 @@ function SnippetPage() {
       });
   }, [id]);
 
-  // Fetch id of currently logged in user
+  // Gets id of currently logged in user from authtoken
   useEffect(() => {
     fetch("../users/whoami", {
       method: "GET",
@@ -88,6 +86,7 @@ function SnippetPage() {
       });
   }, [authtoken]);
 
+  // A div with the snippet, a form for commenting, an error container and the snippet's comments
   return (
     <div style={{ paddingTop: 175 }}>
       <Snippet

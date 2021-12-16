@@ -8,6 +8,7 @@ function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Sends email and password to be checked against the database. If the returned json contains a "passwordError" or "error" field, the contents of the error are displayed. Otherwise the contents of json.message are displayed (success).
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -46,6 +47,7 @@ function RegisterPage() {
     navigate("/");
   };
 
+  // A div containing the Error container, a form for registering and buttons for going to the main page and login page.
   return (
     <div style={{ paddingTop: 200, width: 700, margin: "auto" }}>
       <Error error={error} />
