@@ -50,6 +50,11 @@ function RegisterPage() {
   // A div containing the Error container, a form for registering and buttons for going to the main page and login page.
   return (
     <div style={{ paddingTop: 200, width: 700, margin: "auto" }}>
+      <p>Register:</p>
+      <p>
+        Password should be betweem 8 and 255 characters long, contain upper- and
+        lowercase letters and at least one digit.
+      </p>
       <Error error={error} />
       <form onSubmit={handleSubmit}>
         <label style={{ fontSize: 25, color: "black" }}>

@@ -40,6 +40,7 @@ function LoginPage() {
   // A div containing the error container, a form for logging in and a button for returning to the main page.
   return (
     <div style={{ paddingTop: 200, width: 700, margin: "auto" }}>
+      <p>Login:</p>
       <Error error={error} />
       <form onSubmit={handleSubmit}>
         <label style={{ fontSize: 25, color: "black" }}>
