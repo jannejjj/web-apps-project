@@ -21,7 +21,6 @@ export const CommentForm = ({ snippetid, addComment }) => {
       .then((json) => {
         if (json.error) {
           console.log(json.error);
-          localStorage.removeItem("authtoken"); // if token is expired
         } else {
           setUserid(json.userid);
         }
@@ -69,7 +68,6 @@ export const CommentForm = ({ snippetid, addComment }) => {
       .then((json) => {
         if (json.error) {
           setError(json.error);
-          localStorage.removeItem("authtoken"); // If token is expired
         } else {
           setError("");
           addComment(json);

@@ -79,7 +79,6 @@ function SnippetPage() {
       .then((json) => {
         if (json.error) {
           console.log(json.error);
-          localStorage.removeItem("authtoken"); // if token is expired
         } else {
           setUserid(json.userid);
         }

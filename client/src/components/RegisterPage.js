@@ -52,7 +52,7 @@ function RegisterPage() {
     <div style={{ paddingTop: 200, width: 700, margin: "auto" }}>
       <p>Register:</p>
       <p>
-        Password should be betweem 8 and 255 characters long, contain upper- and
+        Password should be between 8 and 255 characters long, contain upper- and
         lowercase letters and at least one digit.
       </p>
       <Error error={error} />
