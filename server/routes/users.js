@@ -74,7 +74,7 @@ router.post(
   }
 );
 
-// Login - pretty basic. Checks if a user with the req.email exists and then compares passwords. If they match, a jwt is generated for the user. The jwt is then saved to local storage on client side (which is an unsafe practice but will suffice for the purposes of this project). This also means that logout is handled on client side instead of here.
+// Checks if a user with the given email exists and then compares passwords. If they match, a jwt is generated for the user. The jwt is then saved to local storage on client side. This also means that logout is handled on client side instead of here.
 router.post("/login", body("email").trim().escape(), (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err) throw err;
@@ -134,7 +134,7 @@ router.post("/delete", body("email").trim().escape(), (req, res, next) => {
   });
 });
 
-// Used for fetching the userid of the logged in user to be used in front-end
+// Extracts userid from the jwt and returns it. Used for fetching the userid of the logged in user to be used in front-end for conditional rendering etc.
 router.get("/whoami", (req, res, next) => {
   const authHeader = req.headers["authorization"];
   let token = authHeader.split(" ")[1];

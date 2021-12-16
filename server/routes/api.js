@@ -7,7 +7,7 @@ const validateToken = require("../auth/validateToken");
 
 // * * * * * Snippets * * * * * * //
 
-// Checks if an identical snippet exists and if not, saves the snippet to database.
+// Checks if an identical snippet exists and if not, saves the snippet to database. Returns the saved snippet.
 router.post("/snippet/", validateToken, function (req, res, next) {
   Snippet.findOne({ snippet: req.body.snippet }, (err, snippet) => {
     if (err) return next(err);
@@ -50,7 +50,7 @@ router.get("/snippet/:id", function (req, res, next) {
   });
 });
 
-// Finds desired snippet by id and updates it.
+// Finds desired snippet by id and updates it. Returns the updated snippet.
 router.post("/snippet/edit", validateToken, function (req, res, next) {
   Snippet.findByIdAndUpdate(
     { _id: req.body.id },
@@ -92,7 +92,7 @@ router.post("/snippet/delete/", validateToken, function (req, res, next) {
 
 // * * * * * Comments * * * * * * //
 
-// Basically identical to POSTing a snippet. Checks if an identical comment exists and if not, creates one and saves it to db.
+// Basically identical to POSTing a snippet. Checks if an identical comment exists and if not, creates one and saves it to db. Returns the saved comment.
 router.post("/comment/", validateToken, function (req, res, next) {
   Comment.findOne(
     { snippetid: req.body.snippetid, comment: req.body.comment },
@@ -117,7 +117,7 @@ router.post("/comment/", validateToken, function (req, res, next) {
   );
 });
 
-// Finds desired comment by id and updates it.
+// Finds desired comment by id and updates it. Returns the updated comment.
 router.post("/comment/edit", validateToken, function (req, res, next) {
   console.log(req.body.comment, req.body.timestamp);
   Comment.findByIdAndUpdate(
