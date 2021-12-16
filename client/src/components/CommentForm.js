@@ -1,10 +1,31 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Error from "./Error";
 
 export const CommentForm = ({ snippetid }) => {
+  const authtoken = localStorage.getItem("authtoken");
   const [comment, setComment] = useState("");
   const [error, setError] = useState("");
+  const [userid, setUserid] = useState("");
+
+  // Get id of currently logged in user
+  useEffect(() => {
+    fetch("../users/whoami", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + authtoken,
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.error) {
+          console.log(json.error);
+        } else {
+          setUserid(json.userid);
+        }
+      });
+  }, [authtoken]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,6 +50,7 @@ export const CommentForm = ({ snippetid }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        userid: userid,
         snippetid: snippetid,
         comment: comment,
         timestamp: timestamp,

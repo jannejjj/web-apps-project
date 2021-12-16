@@ -1,10 +1,31 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Error from "./Error";
 const SnippetForm = () => {
   const [snippet, setSnippet] = useState("");
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
+  const [userid, setUserid] = useState("");
+  const authtoken = localStorage.getItem("authtoken");
+
+  // Get id of currently logged in user
+  useEffect(() => {
+    fetch("users/whoami", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + authtoken,
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.error) {
+          console.log(json.error);
+        } else {
+          setUserid(json.userid);
+        }
+      });
+  }, [authtoken]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,7 +42,6 @@ const SnippetForm = () => {
       "." +
       curDate.getFullYear();
 
-    console.log(localStorage.getItem("authtoken"));
     console.log(title);
     console.log(snippet);
     console.log(timestamp);
@@ -33,6 +53,7 @@ const SnippetForm = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        userid: userid,
         title: title,
         snippet: snippet,
         timestamp: timestamp,

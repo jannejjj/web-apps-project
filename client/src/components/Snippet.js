@@ -34,9 +34,11 @@ export const Snippet = (props) => {
         <button onClick={downVote} style={{ margin: 6 }}>
           {props.data.downvotes} 👎
         </button>
-        <button onClick={edit} style={{ margin: 6 }}>
-          Edit
-        </button>
+        {props.loggedUser === props.userid && (
+          <button onClick={edit} style={{ margin: 6 }}>
+            Edit
+          </button>
+        )}
       </div>
       <span>{props.data.timestamp}</span>
     </div>

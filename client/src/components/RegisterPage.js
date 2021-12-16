@@ -23,7 +23,7 @@ function RegisterPage() {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json);
+        console.log(json.passwordErrors);
         if (json.error) {
           setError(json.error);
         } else if (json.passwordErrors) {
@@ -31,7 +31,6 @@ function RegisterPage() {
           json.passwordErrors.forEach((error) => {
             errors += error.message + "\n";
           });
-          console.log(errors);
           setError(errors);
         } else {
           setError(json.message);

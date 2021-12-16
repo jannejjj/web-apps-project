@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+// Checks that authHeader exists, then verifies the token within it.
 module.exports = function (req, res, next) {
   const authHeader = req.headers["authorization"];
   let token;
@@ -8,7 +9,6 @@ module.exports = function (req, res, next) {
   } else {
     token = authHeader.split(" ")[1];
   }
-  console.log(authHeader);
 
   jwt.verify(token, process.env.SECRET, (err, result) => {
     if (err) {

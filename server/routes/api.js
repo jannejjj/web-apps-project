@@ -7,12 +7,13 @@ const validateToken = require("../auth/validateToken");
 
 // ********** SNIPPETS ********** //
 
-// Checks if an identical snippet exists and if not, saves the snippet to database and returns 200. Otherwise returns 403.
+// Checks if an identical snippet exists and if not, saves the snippet to database.
 router.post("/snippet/", validateToken, function (req, res, next) {
   Snippet.findOne({ snippet: req.body.snippet }, (err, snippet) => {
     if (err) return next(err);
     if (!snippet) {
       new Snippet({
+        userid: req.body.userid,
         title: req.body.title,
         snippet: req.body.snippet,
         timestamp: req.body.timestamp,
@@ -30,7 +31,7 @@ router.post("/snippet/", validateToken, function (req, res, next) {
   });
 });
 
-// Simply finds all snippets and returns them. A catch is added for errors. This is used for getting the snippets into the feed
+// Simply finds all snippets and returns them as a list of JSON objects. This is used for getting the snippets into the feed in front-end
 router.get("/snippets/", async function (req, res, next) {
   const snippets = await Snippet.find({}).catch((err) =>
     res.send({ error: err })
@@ -38,6 +39,7 @@ router.get("/snippets/", async function (req, res, next) {
   res.json(snippets);
 });
 
+// Gets a specific snippet by id, returns the snippet as JSON
 router.get("/snippet/:id", function (req, res, next) {
   const { id } = req.params;
   Snippet.findById(id, (err, snippet) => {
@@ -50,21 +52,18 @@ router.get("/snippet/:id", function (req, res, next) {
   });
 });
 
-/* NOT USED ATM
-// Either increments or decrements the downvote value by 1, depending on the flag-argument
-router.post('/snippet/downvote/:flag', function(req, res, next) {
-    const {flag} = req.params;
-    let value = 1;
-    if (flag == "decrement") value = -1;
-    Snippet.findByIdAndUpdate(req.body.id,
-        {
-            $inc: {
-                downvotes: value
-            }
-        })
-}) */
+router.post("/snippet/edit/", validateToken, function (req, res, next) {
+  Snippet.findByIdAndUpdate(
+    req.body.id,
+    { snippet: req.body.comment },
+    function (err, snippet) {
+      if (err) return next(err);
+      return res.status(200).json({ message: "Updated snippet" + snippet._id });
+    }
+  );
+});
 
-// Finds snippet by req.body.id and removes it. Then removes all comments whose snippetid = req.body.id
+// Finds snippet by req.body.id and removes it. Then removes all comments whose snippetid = req.body.id. Only available through API, not the UI.
 router.post("/snippet/delete/", validateToken, function (req, res, next) {
   Snippet.findByIdAndRemove(req.body.id, function (err, snippet) {
     if (err) return next(err);
@@ -91,9 +90,7 @@ router.post("/snippet/delete/", validateToken, function (req, res, next) {
   });
 });
 
-// ********* COMMENTS ********** //
-
-// Basically identical to POSTing a snippet. Checks if an identical comment exists and if not, creates one and saves it to db
+// Basically identical to POSTing a snippet. Checks if an identical comment exists and if not, creates one and saves it to db.
 router.post("/comment/", validateToken, function (req, res, next) {
   Comment.findOne(
     { snippetid: req.body.snippetid, comment: req.body.comment },
@@ -101,6 +98,7 @@ router.post("/comment/", validateToken, function (req, res, next) {
       if (err) return next(err);
       if (!comment) {
         new Comment({
+          userid: req.body.userid,
           comment: req.body.comment,
           timestamp: req.body.timestamp,
           upvotes: req.body.upvotes,
@@ -121,7 +119,20 @@ router.post("/comment/", validateToken, function (req, res, next) {
   );
 });
 
-// Simply finds all comments with the speficied snippetid and returns them. A catch is added for errors. This is used for getting the comments into the snippet page.
+router.post("/comment/edit", validateToken, function (req, res, next) {
+  console.log(req);
+  Comment.findByIdAndUpdate(
+    { _id: req.body.id },
+    { comment: req.body.comment },
+    function (err, comment) {
+      if (err) return next(err);
+      console.log(comment);
+      return res.status(200).json({ message: "Updated comment" + comment._id });
+    }
+  );
+});
+
+// Simply finds all comments with the speficied snippet id and returns them. A catch is added for errors. This is used for getting the comments into the snippet page.
 router.get("/comments/:id", async function (req, res, next) {
   const { id } = req.params;
   const comments = await Comment.find({ snippetid: id }).catch((err) =>

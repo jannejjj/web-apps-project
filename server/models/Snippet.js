@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let snippetSchema = new Schema({
+  userid: { type: String },
   title: { type: String },
   snippet: { type: String },
   timestamp: { type: String },

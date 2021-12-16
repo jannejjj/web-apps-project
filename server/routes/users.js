@@ -41,7 +41,7 @@ router.post(
     });
 
     console.log(passwordErrors);
-    if (passwordErrors != []) {
+    if (passwordErrors.length != 0) {
       return res.status(403).json({ passwordErrors: passwordErrors });
     }
 
@@ -94,13 +94,14 @@ router.post("/login", body("email").trim().escape(), (req, res, next) => {
             jwtPayload,
             process.env.SECRET,
             {
-              expiresIn: 600, // 10 minutes shall suffice for this purpose
+              expiresIn: 600, // 10 minutes should be good for this purpose
             },
             (err, token) => {
               console.log(token);
-              res
-                .status(200)
-                .json({ message: "Logged in successfully!", token: token });
+              res.status(200).json({
+                message: "Logged in successfully!",
+                token: token,
+              });
             }
           );
         }
@@ -109,7 +110,7 @@ router.post("/login", body("email").trim().escape(), (req, res, next) => {
   });
 });
 
-// Deleting a user. This could have been done using jwt more, but I felt like simply getting the email and password from req.body is enough. This option is only available for a logged in user.
+// Deleting a user. This could have been done using jwt, but I felt like simply getting the email and password from req.body is enough. This option is only available for a logged in user through the API, not the UI.
 router.post("/delete", body("email").trim().escape(), (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err) throw err;
@@ -133,26 +134,28 @@ router.post("/delete", body("email").trim().escape(), (req, res, next) => {
   });
 });
 
-router.post("/whoami", (req, res, next) => {
+// Used for fetching the userid of the logged in user to be used in front-end
+router.get("/whoami", (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  let token;
-  if (authHeader == undefined || authHeader === null) {
-    return res.status(401).json({ error: "You are not logged in!" });
-  } else {
-    token = authHeader.split(" ")[1];
-  }
-  jwt.verify(token, process.env.SECRET, (err, data) => {
-    return res.status(401).json({ error: "You are not logged in!" });
-  });
-  let userid = data.id;
+  let token = authHeader.split(" ")[1];
 
-  User.findById(userid, function (err, user) {
-    if (!user) {
-      return res.status(404).json({ error: "No user was found with the ID" }); // this should never happen
-    } else {
-      return res.status(200).json({ userid: userid });
+  let userid = "";
+  jwt.verify(token, process.env.SECRET, (err, data) => {
+    if (err) {
+      return res.status(401).json({ error: "User not logged in" });
     }
+    userid = data.id;
   });
+
+  if (userid != "") {
+    User.findById(userid, function (err, user) {
+      if (!user) {
+        return res.status(404).json({ error: "No user was found with the ID" }); // this should never happen
+      } else {
+        return res.status(200).json({ userid: userid });
+      }
+    });
+  }
 });
 
 module.exports = router;
