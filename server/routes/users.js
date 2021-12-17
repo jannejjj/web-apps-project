@@ -74,7 +74,7 @@ router.post(
   }
 );
 
-// Checks if a user with the given email exists and then compares passwords. If they match, a jwt is generated for the user. The jwt is then saved to local storage on client side. This also means that logout is handled on client side instead of here.
+// Login - Checks if a user with the given email exists and then compares passwords. If they match, a jwt is generated for the user. The jwt is then saved to local storage on client side. This also means that logout is handled on client side instead of here.
 router.post("/login", body("email").trim().escape(), (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err) throw err;
